@@ -1,0 +1,26 @@
+clc
+
+%% Load data
+ElbowTruePositionRealControllerDisabled = importdata('ElbowTruePositionRealControllerDisabled.csv');
+ShoulderTruePositionRealControllerDisabled = importdata('ShoulderTruePositionRealControllerDisabled.csv');
+ElbowTruePositionRealControllerEnabled = importdata('ElbowTruePositionReal.csv');
+ShoulderTruePositionRealControllerEnabled = importdata('ShoulderTruePositionReal.csv');
+
+ElbowInputSignal = importdata('ElbowInputSignal.csv');
+ShoulderInputSignal = importdata('ShoulderInputSignal.csv');
+
+
+%% Estimate Transfer Function (input - end effector desired angle, output - end effector true position)
+np = 3; %number of poles
+fs = 60; %Hz
+data = iddata(ElbowTruePositionRealControllerDisabled,ElbowInputSignal, 1/fs);
+sys = tfest(data,np)
+
+[num,den] = tfdata(sys);
+sys = tf(num,den)
+
+%% Step plot
+
+t = 0:(1/fs):6-(1/fs);  % 201 points
+u = ElbowInputSignal;
+lsim(sys,u,t)
