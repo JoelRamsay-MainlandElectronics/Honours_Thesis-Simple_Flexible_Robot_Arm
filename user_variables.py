@@ -107,7 +107,7 @@ class UserVariables(object):
     elbow_end = 155
     shoulder_start = 180
     shoulder_end = 180
-    timespan = 30 #time to move through motion
+    timespan = 3 #time to move through motion
 
     #Home position
     elbow_home = 180

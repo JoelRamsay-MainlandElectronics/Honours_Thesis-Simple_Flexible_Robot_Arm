@@ -334,6 +334,12 @@ class motor(object):
 
 class SendRecieveBulk(object):
     def __init__(self, groupread_num, groupwrite_num):
+        """
+        :param groupread_num: Dynamixel object
+        :param groupwrite_num: Dynamixel object
+
+        This class handles the writing of bulk parameters that update the motor torque, or velocity or acceleration.
+        """
         self.groupread_num = groupread_num
         self.groupwrite_num = groupwrite_num
         return None

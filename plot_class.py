@@ -2,7 +2,12 @@ import numpy as np
 import matplotlib.pyplot as plt
 from user_variables import *
 from operator import add
+
+
 class PlotData(object):
+    """
+    Class to create plots of the position, velocity, acceleration and torque of the motion of the robot.
+    """
     def __init__(self):
         self.Kp_j = -1
         self.Ki_j = -1
@@ -14,7 +19,22 @@ class PlotData(object):
 
         return None
 
-    def joint(self, position, velocity, acceleration, torque, setpoint, identity):
+    def joint(self, motor, positioning_control, setpoint, identity):
+        """
+        :param motor: the motor object containing the position data
+        :param positioning_control: the control system object containing the velocity, acceleration and torque data
+        :param setpoint: the commanded trajectory vector
+        :param identity: the identity of the motor object, "elbow" or "shoulder" for example.
+        :return: None
+
+        This function plots the specific joint data. The position of the joint is read from the Dynamixel motors, contained in the 'motor' object.
+        The setpoint is used to show the reference trajectory for the motion.
+        """
+        position = motor.record_data.position_data
+        velocity = positioning_control.record_data.velocity_data
+        acceleration = positioning_control.record_data.acceleration_data
+        torque = positioning_control.record_data.current_data
+
         if identity == "Elbow":
             if UserVariables.motor_method == "torque":
                 self.Kp_j = UserVariables.Kp_j_elbow
@@ -102,10 +122,25 @@ class PlotData(object):
                                    j * (UserVariables.timespan + UserVariables.timespan_home) + (UserVariables.timespan + UserVariables.timespan_home), facecolor='k', alpha=0.05)
                 index = index + 1
         plt.show()
-        return None
 
-    def link(self, position, velocity, acceleration,  Kp_v, Ki_v, Kd_v, setpoint, identity):
+    def link(self, frame_processing, positioning_control, setpoint, identity):
+        """
+        :param frame_processing: the object that holds the deflection position, velocity and acceleration vectors.
+        :param positioning_control: the control system object that contains the gain parameters.
+        :param setpoint: the commanded trajectory vector
+        :param identity: the identity of the motor object, "elbow" or "shoulder" for example.
+        :return: None
 
+        This function plots the link deflection, acceleration and velocity.
+        """
+
+        position = frame_processing.record_data.position_data
+        velocity = frame_processing.record_data.velocity_data
+        acceleration = frame_processing.record_data.acceleration_data
+
+        Kp_v = positioning_control.Kp_v
+        Ki_v = positioning_control.Ki_v
+        Kd_v = positioning_control.Kd_v
         if identity == "Lower Arm":
             ylim_pos = 60
             ylim_vel = 5000
@@ -151,18 +186,28 @@ class PlotData(object):
         return None
 
 
-    def true_position(self, motor_object, positioning_control_object,link_deflection_data_object, Kp_v, Ki_v, Kd_v, setpoint, identity):
+    def true_position(self, motor, positioning_control,link_deflection_data, setpoint, identity):
+        """
+        :param motor: the motor object containing the position data.
+        :param positioning_control: the control system object containing the velocity, acceleration and torque data of the motors.
+        :param link_deflection_data:
+        :param setpoint: the commanded trajectory vector.
+        :param identity: the identity of the motor object, "elbow" or "shoulder" for example.
+        :return: None
+        """
 
+        joint_position = motor.record_data.position_data
+        deflection_position = link_deflection_data.record_data.position_data
 
-        joint_position = motor_object.record_data.position_data
-        deflection_position = link_deflection_data_object.record_data.position_data
+        joint_velocity = positioning_control.record_data.velocity_data
+        deflection_velocity = link_deflection_data.record_data.velocity_data
 
-        joint_velocity = positioning_control_object.record_data.velocity_data
-        deflection_velocity = link_deflection_data_object.record_data.velocity_data
+        joint_acceleration = positioning_control.record_data.acceleration_data
+        deflection_acceleration = link_deflection_data.record_data.acceleration_data
 
-        joint_acceleration = positioning_control_object.record_data.acceleration_data
-        deflection_acceleration = link_deflection_data_object.record_data.acceleration_data
-
+        Kp_v = positioning_control.Kp_v
+        Ki_v = positioning_control.Ki_v
+        Kd_v = positioning_control.Kd_v
 
         position = list(map(add, joint_position, deflection_position))
         velocity = list(map(add, joint_velocity, deflection_velocity))
@@ -217,4 +262,4 @@ class PlotData(object):
                                    j * (UserVariables.timespan + UserVariables.timespan_home) + (UserVariables.timespan + UserVariables.timespan_home), facecolor='k', alpha=0.05)
                 index = index + 1
         plt.show()
-        return None
+

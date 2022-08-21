@@ -1,5 +1,8 @@
 import cv2
 import depthai as dai
+
+from user_variables import *
+
 print(dai.__version__)
 import numpy as np
 import time
@@ -10,14 +13,14 @@ from record_data_class import *
 
 class Camera(object):
 
-    def __init__(self,camera_selection, exposure_time, ISO):
+    def __init__(self,camera_selection):
         self.ID = None
         self.camera_selection = camera_selection
         self.frame = None
         self.pipeline = None
         self.resolution = None
-        self.ISO = ISO
-        self.exposure_time = exposure_time
+        self.ISO = UserVariables.camera_ISO
+        self.exposure_time = UserVariables.camera_exposure
         self.device_info = None
         self.camera_queue = None
         self.shoulder_ID = "184430101101A51200"

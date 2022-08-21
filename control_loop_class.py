@@ -290,7 +290,9 @@ class control_system(object):
             self.deflection_torque=0
 
 
-    def joint_position_calculator(self,trajectory,trajectory_index,position,deflection_position):
+    def joint_position_calculator(self,trajectory, trajectory_index, elbow_motor, elbow_frame_processing):
+        position = elbow_motor.record_data.position_data
+        deflection_position = elbow_frame_processing.record_data.position_data
         self.position_position_calculator(trajectory, trajectory_index, position)
         self.deflection_position_calculator(deflection_position)
 
@@ -317,7 +319,9 @@ class control_system(object):
 
         self.joint_position = joint_position
 
-    def joint_velocity_calculator(self,trajectory,trajectory_index,position,deflection_position): #the combined positioning torque and vibration control torques
+    def joint_velocity_calculator(self,trajectory, trajectory_index, elbow_motor, elbow_frame_processing): #the combined positioning torque and vibration control torques
+        position = elbow_motor.record_data.position_data
+        deflection_position = elbow_frame_processing.record_data.position_data
         self.position_velocity_calculator(trajectory, trajectory_index, position)
         self.deflection_velocity_calculator(deflection_position)
 
@@ -340,7 +344,9 @@ class control_system(object):
 
         self.joint_velocity = joint_velocity
 
-    def joint_torque_calculator(self,trajectory,trajectory_index,position,deflection_position): #the combined positioning torque and vibration control torques
+    def joint_torque_calculator(self, trajectory, trajectory_index, elbow_motor, elbow_frame_processing): #the combined positioning torque and vibration control torques
+        position = elbow_motor.record_data.position_data
+        deflection_position = elbow_frame_processing.record_data.position_data
         self.position_torque_calculator(trajectory, trajectory_index, position)
         self.deflection_torque_calculator(deflection_position)
 
