@@ -2,6 +2,9 @@ import cv2
 import depthai as dai
 
 from user_variables import *
+from globals import *
+#global shutdown_flag
+#print()
 
 print(dai.__version__)
 import numpy as np
@@ -10,6 +13,8 @@ from time import perf_counter
 import threading
 from record_data_class import *
 from record_data_class import *
+
+
 
 class Camera(object):
 
@@ -28,8 +33,8 @@ class Camera(object):
         self.list_cameras()
         self.check_exists()  # Check if selected camera exists
 
-        t1 = threading.Thread(target=self.create_mono_camera, args=[], daemon=True)
-        t1.start()
+        self.t1 = threading.Thread(target=self.create_mono_camera, args=[], daemon=True)
+        self.t1.start()
 
     def list_cameras(self):
         # Finding the IDs of all connected cameras
@@ -62,6 +67,7 @@ class Camera(object):
     #dai.MonoCameraProperties.SensorResolution =
 
     def create_mono_camera(self):
+        global shutdown_flag
         self.pipeline = dai.Pipeline()# Create pipeline
         mono = self.pipeline.createMonoCamera()
         #mono.setResolution((640,480))
@@ -93,10 +99,14 @@ class Camera(object):
         index = 1
         cumulative_time = 0
         while True:
+            #print(shutdown_flag)
+            if globals.shutdown_flag == 1:
+                #print("Camera thread shutdown!")
+                break
             times = perf_counter()
             frame = self.camera_queue.get()  # get frame
             frame = frame.getCvFrame()
             self.frame = np.rot90(frame, k=3, axes=(1, 0))
             time.sleep(0)#yield
-
+        #self.t1.join()
 

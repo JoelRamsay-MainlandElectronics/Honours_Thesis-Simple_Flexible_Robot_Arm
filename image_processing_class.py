@@ -3,11 +3,14 @@ import time
 from user_variables import *
 from record_data_class import *
 import cv2
+from globals import *
 import numpy as np
+#global shutdown_flag
 
 class ImageProcessing(object):
-
+    # global shutdown_flag
     def __init__(self, identity, camera):
+
         self.frame = None #initialise the frame that the class will process once grabbed
         self.camera = camera #bring the camera object into this class
         self.identity = identity #Whether the image processing is done on shoulder or elbow images
@@ -42,8 +45,8 @@ class ImageProcessing(object):
 
         self.record_data = RecordLinkData() #Construct data recording object
 
-        t1 = threading.Thread(target=self.threading_process, args=[], daemon=True)
-        t1.start()
+        self.t1 = threading.Thread(target=self.threading_process, args=[], daemon=True)
+        self.t1.start()
 
     def get_frame(self):
         frame = self.camera.frame #get frame from camera object
@@ -134,8 +137,12 @@ class ImageProcessing(object):
 
 
     def threading_process(self):
+        # global shutdown_flag
         self.getHomePosition() #Find the static defleciton under rest.
         while True:
+            if globals.shutdown_flag == 1:
+                #print("Camera thread shutdown!")
+                break
             frame = self.get_frame()
             #frame = self.convert_greyscale(frame) %Convert the frame to grayscale if it is not. The OAK-D Lites already send mono images.
             frame = self.crop(frame)
@@ -145,3 +152,4 @@ class ImageProcessing(object):
             self.x = x - self.x_home_offset
             self.frame = frame
             time.sleep(0)#yield
+        #self.t1.join()

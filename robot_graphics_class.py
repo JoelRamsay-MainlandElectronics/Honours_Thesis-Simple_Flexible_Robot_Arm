@@ -7,9 +7,12 @@ import spatialmath as sm
 import spatialgeometry as sg
 #from gamecontroller_class import *
 import threading
+from globals import *
+
 
 class Graphics(object):
     def __init__(self,alphaideal,alphareal):
+        global shutdown_flag
         self.alphaideal = alphaideal
         self.alphareal = alphareal
         self.shoulderideal = 0
@@ -17,11 +20,12 @@ class Graphics(object):
         self.shoulderreal = 0
         self.elbowreal = 0
         #print("in2")
-        t1 = threading.Thread(target=self.run, args=[], daemon=True)
-        t1.start()
+        self.t1 = threading.Thread(target=self.run, args=[], daemon=True)
+        self.t1.start()
         return None
 
     def run(self):
+        # global shutdown_flag
         #print("in1")
         #joy = XboxController()
         # create swift instance
@@ -38,10 +42,14 @@ class Graphics(object):
         while True:
             #self.x = -joy.read()[0]
             #self.y = joy.read()[1]
+            #print(globals.shutdown_flag)
+            if globals.shutdown_flag == 1:
+                #print("Simulation thread shutdown!")
+                break
             robotideal.q = [self.shoulderideal, self.elbowideal]
             robotreal.q = [self.shoulderreal, self.elbowreal]
             env.step(dt)
-
+        #self.t1.join()
         # stop the browser tab from closing
         env.hold()
         return None

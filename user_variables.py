@@ -107,12 +107,12 @@ class UserVariables(object):
     elbow_end = 155
     shoulder_start = 180
     shoulder_end = 180
-    timespan = 3 #time to move through motion
+    timespan = 1 #time to move through motion
 
     #Home position
     elbow_home = 180
     shoulder_home = 180
-    timespan_home = 3 #time to return home
+    timespan_home = 1 #time to return home
 
     #pixels to degrees scaling factor
     deflection_scaling = 0.17
