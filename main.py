@@ -51,7 +51,7 @@ class GUI:
         self.style.map('.', background=
         [('selected', _compcolor), ('active', _ana2color)])
 
-        top.geometry("344x251+1232+313")
+        top.geometry("651x480+679+235")
         top.minsize(120, 1)
         top.maxsize(1924, 2141)
         top.resizable(1, 1)
@@ -66,116 +66,126 @@ class GUI:
         top.configure(menu=self.menubar)
 
         self.TProgressbar1 = ttk.Progressbar(self.top)
-        self.TProgressbar1.place(relx=0.058, rely=0.478, relwidth=0.907
+        self.TProgressbar1.place(relx=0.015, rely=0.667, relwidth=0.306
                                  , relheight=0.0, height=22)
-        self.TProgressbar1.configure(length="312")
+        self.TProgressbar1.configure(length="199")
 
         self.Label1 = tk.Label(self.top)
-        self.Label1.place(relx=0.029, rely=0.359, height=21, width=314)
+        self.Label1.place(relx=0.031, rely=0.604, height=21, width=174)
         self.Label1.configure(activebackground="#f9f9f9")
         self.Label1.configure(activeforeground="black")
         self.Label1.configure(background="#3e3e3e")
         self.Label1.configure(compound='left')
         self.Label1.configure(disabledforeground="#a3a3a3")
+        self.Label1.configure(font="-family {Segoe UI} -size 14 -weight bold")
         self.Label1.configure(foreground="#ffffff")
         self.Label1.configure(highlightbackground="#d9d9d9")
         self.Label1.configure(highlightcolor="black")
         self.Label1.configure(text='''Motion Progress''')
 
         self.ESTOP = tk.Button(self.top)
-        self.ESTOP.place(relx=0.058, rely=0.159, height=44, width=67)
+        self.ESTOP.place(relx=0.031, rely=0.042, height=104, width=197)
         self.ESTOP.configure(activebackground="#ececec")
         self.ESTOP.configure(activeforeground="#000000")
-        self.ESTOP.configure(background="#d9d9d9")
+        self.ESTOP.configure(background="#ff0000")
+        self.ESTOP.configure(borderwidth="10")
         self.ESTOP.configure(compound='left')
+        self.ESTOP.configure(cursor="fleur")
         self.ESTOP.configure(disabledforeground="#a3a3a3")
-        self.ESTOP.configure(foreground="#3e3e3e")
+        self.ESTOP.configure(font="-family {Segoe UI} -size 36 -weight bold")
+        self.ESTOP.configure(foreground="#ffffff")
         self.ESTOP.configure(highlightbackground="#d9d9d9")
         self.ESTOP.configure(highlightcolor="black")
         self.ESTOP.configure(pady="0")
         self.ESTOP.configure(text='''ESTOP''')
 
         self.RESET = tk.Button(self.top)
-        self.RESET.place(relx=0.058, rely=0.359, height=24, width=67)
+        self.RESET.place(relx=0.215, rely=0.292, height=34, width=77)
         self.RESET.configure(activebackground="#ececec")
         self.RESET.configure(activeforeground="#000000")
-        self.RESET.configure(background="#d9d9d9")
+        self.RESET.configure(background="#ff8040")
+        self.RESET.configure(borderwidth="5")
         self.RESET.configure(compound='left')
         self.RESET.configure(disabledforeground="#a3a3a3")
-        self.RESET.configure(foreground="#3e3e3e")
+        self.RESET.configure(foreground="#ffffff")
         self.RESET.configure(highlightbackground="#d9d9d9")
         self.RESET.configure(highlightcolor="black")
         self.RESET.configure(pady="0")
         self.RESET.configure(text='''Reset''')
 
         self.CYCLESTART = tk.Button(self.top)
-        self.CYCLESTART.place(relx=0.058, rely=0.876, height=24, width=67)
+        self.CYCLESTART.place(relx=0.015, rely=0.875, height=44, width=87)
         self.CYCLESTART.configure(activebackground="#ececec")
         self.CYCLESTART.configure(activeforeground="#000000")
-        self.CYCLESTART.configure(background="#d9d9d9")
+        self.CYCLESTART.configure(background="#00b300")
+        self.CYCLESTART.configure(borderwidth="5")
         self.CYCLESTART.configure(compound='left')
-        self.CYCLESTART.configure(cursor="fleur")
         self.CYCLESTART.configure(disabledforeground="#a3a3a3")
-        self.CYCLESTART.configure(foreground="#3e3e3e")
+        self.CYCLESTART.configure(font="-family {Segoe UI} -size 11 -weight bold")
+        self.CYCLESTART.configure(foreground="#ffffff")
         self.CYCLESTART.configure(highlightbackground="#d9d9d9")
         self.CYCLESTART.configure(highlightcolor="black")
         self.CYCLESTART.configure(pady="0")
         self.CYCLESTART.configure(text='''Cycle Start''')
 
         self.SHUTDOWN = tk.Button(self.top)
-        self.SHUTDOWN.place(relx=0.058, rely=0.04, height=24, width=67)
+        self.SHUTDOWN.place(relx=0.031, rely=0.292, height=34, width=87)
         self.SHUTDOWN.configure(activebackground="#ececec")
         self.SHUTDOWN.configure(activeforeground="#000000")
-        self.SHUTDOWN.configure(background="#d9d9d9")
+        self.SHUTDOWN.configure(background="#ff0000")
+        self.SHUTDOWN.configure(borderwidth="5")
         self.SHUTDOWN.configure(compound='left')
         self.SHUTDOWN.configure(disabledforeground="#a3a3a3")
-        self.SHUTDOWN.configure(foreground="#3e3e3e")
+        self.SHUTDOWN.configure(foreground="#ffffff")
         self.SHUTDOWN.configure(highlightbackground="#d9d9d9")
         self.SHUTDOWN.configure(highlightcolor="black")
         self.SHUTDOWN.configure(pady="0")
         self.SHUTDOWN.configure(text='''Shutdown''')
 
         self.FEEDHOLD = tk.Button(self.top)
-        self.FEEDHOLD.place(relx=0.32, rely=0.876, height=24, width=67)
+        self.FEEDHOLD.place(relx=0.169, rely=0.875, height=44, width=87)
         self.FEEDHOLD.configure(activebackground="#ececec")
         self.FEEDHOLD.configure(activeforeground="#000000")
-        self.FEEDHOLD.configure(background="#d9d9d9")
+        self.FEEDHOLD.configure(background="#ff0000")
+        self.FEEDHOLD.configure(borderwidth="5")
         self.FEEDHOLD.configure(compound='left')
         self.FEEDHOLD.configure(disabledforeground="#a3a3a3")
-        self.FEEDHOLD.configure(foreground="#3e3e3e")
-        self.FEEDHOLD.configure(highlightbackground="#d9d9d9")
+        self.FEEDHOLD.configure(font="-family {Segoe UI} -size 11 -weight bold")
+        self.FEEDHOLD.configure(foreground="#ffffff")
+        self.FEEDHOLD.configure(highlightbackground="#ffffff")
         self.FEEDHOLD.configure(highlightcolor="black")
         self.FEEDHOLD.configure(pady="0")
-        self.FEEDHOLD.configure(text='''Feedhold''')
+        self.FEEDHOLD.configure(text='''Feed Hold''')
 
 
         #Set callbacks
         self.ESTOP.configure(command=self.set_estop_flag)
-        self.RESET.configure(command=self.reset_estop_flag)
+        self.RESET.configure(command=self.reset_flag)
         self.SHUTDOWN.configure(command=self.set_shutdown_flag)
         self.CYCLESTART.configure(command=self.set_cyclestart_flag)
+        self.FEEDHOLD.configure(command=self.set_feedhold_flag)
 
     def set_estop_flag(self):
-        #global globals.estop_flag
         print("estop")
         globals.estop_flag = 1 #sets the estop flag to 1, so the program turns off the motors and waits until reset and cycle start.
 
-    def reset_estop_flag(self):
-        print("reset")
-        # global globals.estop_flag, globals.cycle_start_flag
-        globals.estop_flag = 0 #sets the estop flag to 1, so the program turns off the motors and waits until reset and cycle start.
-        globals.cycle_start_flag = 0
+    def reset_flag(self):
+        print("reset")#sets the estop flag to 1, so the program turns off the motors and waits until reset and cycle start.
+        globals.reset_flag = 1
+        globals.estop_flag = 0
 
     def set_shutdown_flag(self):
         print("shutdown")
-        # global globals.shutdown_flag
         globals.shutdown_flag = 1 #sets the estop flag to 1, so the program turns off the motors and quits.
 
     def set_cyclestart_flag(self):
         print("cyclestart")
-        # global globals.cycle_start_flag
         globals.cycle_start_flag = 1 #sets the estop flag to 1, so the program turns off the motors and quits.
 
+
+    def set_feedhold_flag(self):
+        print("feedhold")
+        globals.feedhold_flag = 1 #feedhold while in motion (stays at last position when in position mode)
 
 
 class MainClass(object):
@@ -248,17 +258,13 @@ class MainClass(object):
         return None
 
     def run(self):
-        # global globals.cycle_start_flag
-        # global globals.shutdown_flag
-
         print("Running Main...")
         breakloop = False
-        globals.cycle_start_flag = 0  # reset cycle start flag.
+        globals.cycle_start_flag = 0  # reset cycle start flag to avoid unintentional activation.
         while True:
             print("Press CYCLE START to run.")
-
-            if globals.cycle_start_flag == 1: #loop forever until the cycle start signal is given by the user. This will initiate the trajectory to run.
-
+            #if estop has been reset and cycle start is on, then run
+            if globals.cycle_start_flag == 1 and globals.reset_flag == 0 and globals.estop_flag == 0: #loop forever until the cycle start signal is given by the user. This will initiate the trajectory to run.
                 index = 0
                 self.elbow_motor.enable_motor()#enable the motors
                 self.shoulder_motor.enable_motor()
@@ -266,15 +272,63 @@ class MainClass(object):
 
                 while index < self.elbow_trajectory_generator.datapoints:
 
-                    # Check variables for changes from gui
-                    return_reset = self.check_changes()
-                    if return_reset == 1: #if the estop and the reset has been pressed, stop execution and wait for go signal.
+                    if globals.estop_flag == 1:  #If estop is pressed, break out
+                        globals.cycle_start_flag = 0
+                        globals.feedhold_flag = 0
+                        globals.reset_flag = 0
+                        self.elbow_motor.disable_motor()  # disable the motors
+                        self.shoulder_motor.disable_motor()
                         robot_gui.TProgressbar1.configure(value=0)  # update the progress bar on the gui
+                        #breakloop = True
                         break
 
-                    #Quick shutdown without waiting for motion to finish
+                    elif globals.reset_flag == 1: #If reset is pressed, break out but keep motors active
+                        globals.cycle_start_flag = 0
+                        globals.feedhold_flag = 0
+                        robot_gui.TProgressbar1.configure(value=0)  # update the progress bar on the gui
+                        #globals.reset_flag = 0
+                        #breakloop = True
+                        break
+
+                    elif globals.feedhold_flag == 1: #If feedhold is pressed, stop the motion until cycle start is pressed
+                        globals.cycle_start_flag = 0
+                        while globals.feedhold_flag == 1:
+                            if globals.cycle_start_flag == 1:
+                                globals.feedhold_flag = 0 #reset the feedhold flag
+                                break
+
+
+                    # Quick shutdown without waiting for motion to finish
                     if globals.shutdown_flag == 1:
                         break
+
+                    # while globals.feedhold_flag == 1:
+                    #     #return_reset = self.check_changes()  # Check variables for changes from gui
+                    #
+                    #
+                    #
+                    #
+                    #
+                    #     if (globals.estop_flag == 1) and (globals.reset_flag):
+                    #         robot_gui.TProgressbar1.configure(value=0)  # update the progress bar on the gui
+                    #
+                    #
+                    #     if return_reset == 1:  # if the estop and the reset has been pressed, stop execution and wait for go signal.
+                    #         robot_gui.TProgressbar1.configure(value=0)  # update the progress bar on the gui
+                    #         break
+                    #
+                    #     # Quick shutdown without waiting for motion to finish
+                    #     if globals.shutdown_flag == 1:
+                    #         break
+                    #     time.sleep(0)
+
+
+                    # return_reset = self.check_changes()# Check variables for changes from gui
+                    # if return_reset == 1: #if the estop and the reset has been pressed, stop execution and wait for go signal.
+                    #     robot_gui.TProgressbar1.configure(value=0)  # update the progress bar on the gui
+                    #     break
+
+
 
 
                     SendRecieveBulk(self.groupread_num, self.groupwrite_num).transmit_read()  # Request for new data
@@ -339,11 +393,16 @@ class MainClass(object):
             # Disable the motors
             self.elbow_motor.disable_motor()
             self.shoulder_motor.disable_motor()
-
             globals.cycle_start_flag = 0  # reset cycle start flag.
+
             while True:
+                #cycle start button monitoring
                 if globals.cycle_start_flag == 1:
+                    globals.reset_flag = 0
+                    time.sleep(0.1)
                     break
+
+                #Shutdown flag monitoring
                 if globals.shutdown_flag == 1:
                     breakloop = True
                     break
