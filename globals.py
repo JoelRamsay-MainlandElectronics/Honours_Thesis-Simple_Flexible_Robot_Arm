@@ -9,3 +9,7 @@ class globals(object):
     shutdown_flag = 0
     feedhold_flag = 0
     reset_flag = 0
+
+    root = 0
+    robot_gui = 0
+    stop_threads = 0
