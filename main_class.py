@@ -100,6 +100,86 @@ class MainClass(object):
         finished_flag = 0
         globals.cycle_start_flag = 0  # reset cycle start flag to avoid unintentional activation.
         while True:
+            #if the mode buttons have been moved, then reset the motor modes
+            print(globals.controller_checkbox_flag)
+            print(globals.mode_changed_flag or globals.controller_checkbox_flag)
+            if (globals.mode_changed_flag or globals.controller_checkbox_flag) == 1:
+                print("Entered!")
+                globals.mode_changed_flag = 0 #reset the flag.
+                globals.controller_checkbox_flag = 0
+
+                if globals.mode == "position":
+                    UserVariables.motor_method = UserVariables.motor_methods[0] #position mode
+                    print(UserVariables.disable_controller)
+                    self.elbow_positioning_control.__init__("Elbow", self.elbow_frame_processing) #reinitialising the control loop with the new gains from the mode switching
+                    self.shoulder_positioning_control.__init__("Shoulder", self.shoulder_frame_processing)
+                    # Reboot the elbow and shoulder motors (rebooting resets any errors)
+                    self.elbow_motor.reboot_motor()
+                    self.shoulder_motor.reboot_motor()
+                    time.sleep(0.1)
+
+                    # Set drive mode of the motors (torque, velcoticy or position mode, determined in uservariabled class)
+                    self.elbow_motor.set_mode()
+                    self.shoulder_motor.set_mode()
+
+                    # Enable the motors (set the torque to 'on')
+                    self.elbow_motor.enable_motor()
+                    self.shoulder_motor.enable_motor()
+
+                    # add the elbow and shoulder bulkread parameters (only needs to be done once)
+                    # self.elbow_motor.add_read_param()
+                    # self.shoulder_motor.add_read_param()
+                    # SendRecieveBulk(self.groupread_num, self.groupwrite_num).transmit_read()
+                    SendRecieveBulk(self.groupread_num, self.groupwrite_num).clear_write_param()
+
+                if globals.mode == "velocity":
+                    UserVariables.motor_method = UserVariables.motor_methods[1] #velocity mode
+                    self.elbow_positioning_control.__init__("Elbow", self.elbow_frame_processing) #reinitialising the control loop with the new gains from the mode switching
+                    self.shoulder_positioning_control.__init__("Shoulder", self.shoulder_frame_processing)
+                    # Reboot the elbow and shoulder motors (rebooting resets any errors)
+                    self.elbow_motor.reboot_motor()
+                    self.shoulder_motor.reboot_motor()
+                    time.sleep(0.1)
+
+                    # Set drive mode of the motors (torque, velcoticy or position mode, determined in uservariabled class)
+                    self.elbow_motor.set_mode()
+                    self.shoulder_motor.set_mode()
+
+                    # Enable the motors (set the torque to 'on')
+                    self.elbow_motor.enable_motor()
+                    self.shoulder_motor.enable_motor()
+
+                    # add the elbow and shoulder bulkread parameters (only needs to be done once)
+                    # self.elbow_motor.add_read_param()
+                    # self.shoulder_motor.add_read_param()
+                    # SendRecieveBulk(self.groupread_num, self.groupwrite_num).transmit_read()
+                    SendRecieveBulk(self.groupread_num, self.groupwrite_num).clear_write_param()
+
+                if globals.mode == "torque":
+                    UserVariables.motor_method = UserVariables.motor_methods[2] #torque mode
+                    self.elbow_positioning_control.__init__("Elbow", self.elbow_frame_processing) #reinitialising the control loop with the new gains from the mode switching
+                    self.shoulder_positioning_control.__init__("Shoulder", self.shoulder_frame_processing)
+                    # Reboot the elbow and shoulder motors (rebooting resets any errors)
+                    self.elbow_motor.reboot_motor()
+                    self.shoulder_motor.reboot_motor()
+                    time.sleep(0.1)
+
+                    # Set drive mode of the motors (torque, velcoticy or position mode, determined in uservariabled class)
+                    self.elbow_motor.set_mode()
+                    self.shoulder_motor.set_mode()
+
+                    # Enable the motors (set the torque to 'on')
+                    self.elbow_motor.enable_motor()
+                    self.shoulder_motor.enable_motor()
+
+                    # add the elbow and shoulder bulkread parameters (only needs to be done once)
+                    # self.elbow_motor.add_read_param()
+                    # self.shoulder_motor.add_read_param()
+                    # SendRecieveBulk(self.groupread_num, self.groupwrite_num).transmit_read()
+                    SendRecieveBulk(self.groupread_num, self.groupwrite_num).clear_write_param()
+
+
+
             print("Press CYCLE START to run.")
             # if estop has been reset and cycle start is on, then run
             if globals.cycle_start_flag == 1 and globals.reset_flag == 0 and globals.estop_flag == 0:  # loop forever until the cycle start signal is given by the user. This will initiate the trajectory to run.
@@ -252,26 +332,39 @@ class MainClass(object):
                 break  # break the main loop.
             print("running loop")
 
+        #if shutting down
+        self.close_port()
+
+        self.write_variables()
+        self.display_graphs()
+        self.close_GUI() #The main thread is destroyed when the gui is closed.
+
+
+    def close_port(self):
         # Close serial port
         self.handler.close_port()
 
-        # write_csv(self.elbow_motor, self.shoulder_motor, self.elbow_frame_processing, self.shoulder_frame_processing, self.elbow_traj,
-        #           self.shoulder_traj)  # write the recorded various data to CSV files for MATLAB to use in the system identification tool.
-        #
-        # overshoot_elbow = PerformanceMetrics(self.elbow_motor, self.elbow_frame_processing, self.elbow_traj).overshoot_percentage()  # calculate the overshoot percentage
-        # overshoot_shoulder = PerformanceMetrics(self.shoulder_motor, self.shoulder_frame_processing, self.shoulder_traj).overshoot_percentage()
-        #
-        # print("Elbow Maximum Overshoot during run", "{x:.2f}".format(x=overshoot_elbow * 100), "%")
-        # print("Shoulder Maximum Overshoot during run", "{x:.2f}".format(x=overshoot_shoulder * 100), "%")
-        #
-        # plots = PlotData()
-        # plots.joint(self.elbow_motor, self.elbow_positioning_control, self.elbow_traj, "Elbow")  # plot the joint data
-        # plots.joint(self.shoulder_motor, self.shoulder_positioning_control, self.shoulder_traj, "Shoulder")
-        #
-        # plots.link(self.elbow_frame_processing, self.elbow_positioning_control, self.elbow_traj, "Lower Arm")  # plot the link data
-        # plots.link(self.shoulder_frame_processing, self.shoulder_positioning_control, self.shoulder_traj, "Upper Arm")
-        #
-        # plots.true_position(self.elbow_motor, self.elbow_positioning_control, self.elbow_frame_processing, self.elbow_traj, "Lower Arm")
-        # plots.true_position(self.shoulder_motor, self.shoulder_positioning_control, self.shoulder_frame_processing, self.shoulder_traj, "Upper Arm")
+    def write_variables(self):
+        write_csv(self.elbow_motor, self.shoulder_motor, self.elbow_frame_processing, self.shoulder_frame_processing, self.elbow_traj,
+                  self.shoulder_traj)  # write the recorded various data to CSV files for MATLAB to use in the system identification tool.
 
+    def display_graphs(self):
+        #print("Making graphs...")
+        overshoot_elbow = PerformanceMetrics(self.elbow_motor, self.elbow_frame_processing, self.elbow_traj).overshoot_percentage()  # calculate the overshoot percentage
+        overshoot_shoulder = PerformanceMetrics(self.shoulder_motor, self.shoulder_frame_processing, self.shoulder_traj).overshoot_percentage()
+
+        print("Elbow Maximum Overshoot during run", "{x:.2f}".format(x=overshoot_elbow * 100), "%")
+        print("Shoulder Maximum Overshoot during run", "{x:.2f}".format(x=overshoot_shoulder * 100), "%")
+
+        plots = PlotData()
+        plots.joint(self.elbow_motor, self.elbow_positioning_control, self.elbow_traj, "Elbow")  # plot the joint data
+        plots.joint(self.shoulder_motor, self.shoulder_positioning_control, self.shoulder_traj, "Shoulder")
+
+        plots.link(self.elbow_frame_processing, self.elbow_positioning_control, self.elbow_traj, "Lower Arm")  # plot the link data
+        plots.link(self.shoulder_frame_processing, self.shoulder_positioning_control, self.shoulder_traj, "Upper Arm")
+
+        plots.true_position(self.elbow_motor, self.elbow_positioning_control, self.elbow_frame_processing, self.elbow_traj, "Lower Arm")
+        plots.true_position(self.shoulder_motor, self.shoulder_positioning_control, self.shoulder_frame_processing, self.shoulder_traj, "Upper Arm")
+
+    def close_GUI(self):
         globals.root.destroy()  # close the GUI

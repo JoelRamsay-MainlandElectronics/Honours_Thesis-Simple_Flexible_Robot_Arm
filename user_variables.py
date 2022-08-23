@@ -1,22 +1,23 @@
 class UserVariables(object):
-    disable_controller = False
+    disable_controller = False #By default, have the vibration controller on.
     use_game_controller = True
     motor_methods = ["position", "velocity", "torque"]
-    motor_method = motor_methods[0]
+    motor_method = motor_methods[0] #by default, select position control mode.
     point_to_point = True
+
 
     #PID Controller gains for TORQUE CONTROL MODE################################################################
     #Joint control
-    Kp_j_elbow = 2#20 #2 %These will need to be adjusted because of the 0.17 scaling for the pixels to angle.
-    Kd_j_elbow = 0.25#10 #0.25
-    Ki_j_elbow = 0.15#0.00001 #0.15
+    Kp_j_elbow = 2#0.34#2#20 #2 %These will need to be adjusted because of the 0.17 scaling for the pixels to angle.
+    Kd_j_elbow = 0.25#0.04#0.25#10 #0.25
+    Ki_j_elbow = 0.15#0.02#0.15#0.00001 #0.15
 
-    Kp_j_shoulder = 10#0 #10
-    Kd_j_shoulder = 4#0.000001 #4
-    Ki_j_shoulder = 0.15#0.000001 #0.15
+    Kp_j_shoulder = 10#1.7#10#0 #10
+    Kd_j_shoulder = 4#0.68#4#0.000001 #4
+    Ki_j_shoulder = 0.15#0.02#0.15#0.000001 #0.15
 
     #Vibration Control
-    Kp_v_lower_arm = 0.2#0.2#50 #0.2
+    Kp_v_lower_arm = 0.03#0.2#0.2#50 #0.2
     Kd_v_lower_arm = 0.01#0.01#50 #0.01
     Ki_v_lower_arm = 0
 
@@ -107,12 +108,12 @@ class UserVariables(object):
     elbow_end = 155
     shoulder_start = 180
     shoulder_end = 180
-    timespan = 1 #time to move through motion
+    timespan = 2 #time to move through motion
 
     #Home position
     elbow_home = 180
     shoulder_home = 180
-    timespan_home = 1 #time to return home
+    timespan_home = 2 #time to return home
 
     #pixels to degrees scaling factor
     deflection_scaling = 0.17

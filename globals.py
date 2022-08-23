@@ -1,3 +1,5 @@
+from user_variables import UserVariables
+
 class globals(object):
     #Globals=====================
     # global estop_flag
@@ -13,3 +15,6 @@ class globals(object):
     root = 0
     robot_gui = 0
     stop_threads = 0
+    mode = UserVariables.motor_method
+    mode_changed_flag = 0
+    controller_checkbox_flag = 0

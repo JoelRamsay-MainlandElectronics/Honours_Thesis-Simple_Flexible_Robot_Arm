@@ -1,3 +1,4 @@
+import user_variables
 from imports_file import *
 from imports_file import tk,sys
 
@@ -19,7 +20,7 @@ class GUI:
         self.style.map('.', background=
         [('selected', _compcolor), ('active', _ana2color)])
 
-        top.geometry("651x480+889+205")
+        top.geometry("1133x816+440+78")
         top.minsize(120, 1)
         top.maxsize(1924, 2141)
         top.resizable(1, 1)
@@ -29,20 +30,19 @@ class GUI:
         top.configure(highlightcolor="black")
 
         self.top = top
-        self.Position = tk.IntVar()
-        self.Velocity = tk.IntVar()
-        self.Torque = tk.IntVar()
+        self.mode = tk.IntVar()
+        self.controller = tk.IntVar()
 
         self.menubar = tk.Menu(top, font="TkMenuFont", bg='#c0c0c0', fg=_fgcolor)
         top.configure(menu=self.menubar)
 
         self.TProgressbar1 = ttk.Progressbar(self.top)
-        self.TProgressbar1.place(relx=0.015, rely=0.625, relwidth=0.306
+        self.TProgressbar1.place(relx=0.026, rely=0.784, relwidth=0.177
                                  , relheight=0.0, height=22)
-        self.TProgressbar1.configure(length="199")
+        self.TProgressbar1.configure(length="197")
 
         self.Label1 = tk.Label(self.top)
-        self.Label1.place(relx=0.031, rely=0.563, height=21, width=174)
+        self.Label1.place(relx=0.026, rely=0.735, height=36, width=192)
         self.Label1.configure(activebackground="#f9f9f9")
         self.Label1.configure(activeforeground="black")
         self.Label1.configure(background="#3e3e3e")
@@ -70,7 +70,7 @@ class GUI:
         self.ESTOP.configure(text='''ESTOP''')
 
         self.RESET = tk.Button(self.top)
-        self.RESET.place(relx=0.215, rely=0.292, height=34, width=77)
+        self.RESET.place(relx=0.132, rely=0.208, height=34, width=77)
         self.RESET.configure(activebackground="#ececec")
         self.RESET.configure(activeforeground="#000000")
         self.RESET.configure(background="#ff8040")
@@ -84,7 +84,7 @@ class GUI:
         self.RESET.configure(text='''Reset''')
 
         self.CYCLESTART = tk.Button(self.top)
-        self.CYCLESTART.place(relx=0.015, rely=0.875, height=44, width=87)
+        self.CYCLESTART.place(relx=0.018, rely=0.895, height=44, width=87)
         self.CYCLESTART.configure(activebackground="#ececec")
         self.CYCLESTART.configure(activeforeground="#000000")
         self.CYCLESTART.configure(background="#00b300")
@@ -99,7 +99,7 @@ class GUI:
         self.CYCLESTART.configure(text='''Cycle Start''')
 
         self.SHUTDOWN = tk.Button(self.top)
-        self.SHUTDOWN.place(relx=0.031, rely=0.292, height=34, width=87)
+        self.SHUTDOWN.place(relx=0.035, rely=0.208, height=34, width=87)
         self.SHUTDOWN.configure(activebackground="#ececec")
         self.SHUTDOWN.configure(activeforeground="#000000")
         self.SHUTDOWN.configure(background="#ff0000")
@@ -113,7 +113,7 @@ class GUI:
         self.SHUTDOWN.configure(text='''Shutdown''')
 
         self.FEEDHOLD = tk.Button(self.top)
-        self.FEEDHOLD.place(relx=0.169, rely=0.875, height=44, width=87)
+        self.FEEDHOLD.place(relx=0.124, rely=0.895, height=44, width=87)
         self.FEEDHOLD.configure(activebackground="#ececec")
         self.FEEDHOLD.configure(activeforeground="#000000")
         self.FEEDHOLD.configure(background="#ff0000")
@@ -128,15 +128,17 @@ class GUI:
         self.FEEDHOLD.configure(text='''Feed Hold''')
 
         self.Frame1 = tk.Frame(self.top)
-        self.Frame1.place(relx=0.031, rely=0.396, relheight=0.156
-                          , relwidth=0.301)
+        self.Frame1.place(relx=0.035, rely=0.282, relheight=0.157
+                          , relwidth=0.169)
         self.Frame1.configure(relief='raised')
         self.Frame1.configure(borderwidth="5")
         self.Frame1.configure(relief="raised")
         self.Frame1.configure(background="#d9d9d9")
+        self.Frame1.configure(highlightbackground="#d9d9d9")
+        self.Frame1.configure(highlightcolor="black")
 
         self.STATUSMESSAGE = tk.Label(self.Frame1)
-        self.STATUSMESSAGE.place(relx=0.051, rely=0.133, height=51, width=174)
+        self.STATUSMESSAGE.place(relx=0.052, rely=0.156, height=87, width=170)
         self.STATUSMESSAGE.configure(activebackground="#f9f9f9")
         self.STATUSMESSAGE.configure(activeforeground="black")
         self.STATUSMESSAGE.configure(anchor='nw')
@@ -154,9 +156,10 @@ class GUI:
         self.style.map('TNotebook.Tab', background=
         [('selected', _compcolor), ('active', _ana2color)])
         self.TNotebook1 = ttk.Notebook(self.top)
-        self.TNotebook1.place(relx=0.445, rely=0.167, relheight=0.471
+        self.TNotebook1.place(relx=0.45, rely=0.355, relheight=0.608
                               , relwidth=0.467)
         self.TNotebook1.configure(takefocus="")
+        self.TNotebook1.configure(cursor="fleur")
         self.TNotebook1_t1 = tk.Frame(self.TNotebook1)
         self.TNotebook1.add(self.TNotebook1_t1, padding=3)
         self.TNotebook1.tab(0, text='''Position''', compound="left"
@@ -180,22 +183,86 @@ class GUI:
         self.TNotebook1_t3.configure(highlightcolor="black")
 
         self.Label2 = tk.Label(self.TNotebook1_t1)
-        self.Label2.place(relx=0.033, rely=0.05, height=91, width=274)
+        self.Label2.place(relx=0.032, rely=0.051, height=70, width=480)
+        self.Label2.configure(activebackground="#f9f9f9")
+        self.Label2.configure(activeforeground="black")
         self.Label2.configure(anchor='nw')
         self.Label2.configure(background="#ffffff")
         self.Label2.configure(borderwidth="0.5")
         self.Label2.configure(compound='left')
-        self.Label2.configure(cursor="fleur")
         self.Label2.configure(disabledforeground="#a3a3a3")
         self.Label2.configure(foreground="#000000")
+        self.Label2.configure(highlightbackground="#d9d9d9")
+        self.Label2.configure(highlightcolor="black")
         self.Label2.configure(justify='left')
         self.Label2.configure(relief="solid")
         self.Label2.configure(text='''Actuator Control: Position Control (position commands supplied to motor)
     Vibration Control: PID''')
         self.Label2.configure(wraplength="284")
 
+        self.TScale1 = ttk.Scale(self.TNotebook1_t1, from_=0, to=1.0)
+        self.TScale1.place(relx=0.438, rely=0.302, relheight=0.174
+                           , relwidth=0.333)
+        self.TScale1.configure(length="175")
+        self.TScale1.configure(takefocus="")
+
+        self.Label3 = tk.Label(self.TNotebook1_t1)
+        self.Label3.place(relx=0.057, rely=0.27, height=23, width=114)
+        self.Label3.configure(activebackground="#f9f9f9")
+        self.Label3.configure(activeforeground="black")
+        self.Label3.configure(anchor='w')
+        self.Label3.configure(background="#d9d9d9")
+        self.Label3.configure(compound='left')
+        self.Label3.configure(disabledforeground="#a3a3a3")
+        self.Label3.configure(foreground="#000000")
+        self.Label3.configure(highlightbackground="#d9d9d9")
+        self.Label3.configure(highlightcolor="black")
+        self.Label3.configure(text='''Motor Parameters''')
+
+        self.Label3_1 = tk.Label(self.TNotebook1_t1)
+        self.Label3_1.place(relx=0.057, rely=0.317, height=23, width=34)
+        self.Label3_1.configure(activebackground="#f9f9f9")
+        self.Label3_1.configure(activeforeground="black")
+        self.Label3_1.configure(anchor='w')
+        self.Label3_1.configure(background="#d9d9d9")
+        self.Label3_1.configure(compound='left')
+        self.Label3_1.configure(disabledforeground="#a3a3a3")
+        self.Label3_1.configure(font="-family {Segoe UI} -size 14")
+        self.Label3_1.configure(foreground="#000000")
+        self.Label3_1.configure(highlightbackground="#d9d9d9")
+        self.Label3_1.configure(highlightcolor="black")
+        self.Label3_1.configure(text='''Kp''')
+
+        self.Label3_1_1 = tk.Label(self.TNotebook1_t1)
+        self.Label3_1_1.place(relx=0.057, rely=0.366, height=23, width=24)
+        self.Label3_1_1.configure(activebackground="#f9f9f9")
+        self.Label3_1_1.configure(activeforeground="black")
+        self.Label3_1_1.configure(anchor='w')
+        self.Label3_1_1.configure(background="#d9d9d9")
+        self.Label3_1_1.configure(compound='left')
+        self.Label3_1_1.configure(disabledforeground="#a3a3a3")
+        self.Label3_1_1.configure(font="-family {Segoe UI} -size 14")
+        self.Label3_1_1.configure(foreground="#000000")
+        self.Label3_1_1.configure(highlightbackground="#d9d9d9")
+        self.Label3_1_1.configure(highlightcolor="black")
+        self.Label3_1_1.configure(text='''Ki''')
+
+        self.Label3_1_1_1 = tk.Label(self.TNotebook1_t1)
+        self.Label3_1_1_1.place(relx=0.057, rely=0.445, height=23, width=24)
+        self.Label3_1_1_1.configure(activebackground="#f9f9f9")
+        self.Label3_1_1_1.configure(activeforeground="black")
+        self.Label3_1_1_1.configure(anchor='w')
+        self.Label3_1_1_1.configure(background="#d9d9d9")
+        self.Label3_1_1_1.configure(compound='left')
+        self.Label3_1_1_1.configure(disabledforeground="#a3a3a3")
+        self.Label3_1_1_1.configure(font="-family {Segoe UI} -size 14")
+        self.Label3_1_1_1.configure(foreground="#000000")
+        self.Label3_1_1_1.configure(highlightbackground="#d9d9d9")
+        self.Label3_1_1_1.configure(highlightcolor="black")
+        self.Label3_1_1_1.configure(text='''Kd''')
+
         self.Label2_1 = tk.Label(self.TNotebook1_t2)
-        self.Label2_1.place(relx=0.033, rely=0.1, height=91, width=274)
+        self.Label2_1.place(relx=0.0, rely=0.0, height=1, width=1)
         self.Label2_1.configure(activebackground="#f9f9f9")
         self.Label2_1.configure(activeforeground="black")
         self.Label2_1.configure(anchor='nw')
@@ -214,14 +281,13 @@ class GUI:
         self.Label2_1.configure(wraplength="284")
 
         self.Label2_1_1 = tk.Label(self.TNotebook1_t3)
-        self.Label2_1_1.place(relx=0.033, rely=0.05, height=91, width=284)
+        self.Label2_1_1.place(relx=0.0, rely=0.0, height=1, width=1)
         self.Label2_1_1.configure(activebackground="#f9f9f9")
         self.Label2_1_1.configure(activeforeground="black")
         self.Label2_1_1.configure(anchor='nw')
         self.Label2_1_1.configure(background="#ffffff")
         self.Label2_1_1.configure(borderwidth="0.5")
         self.Label2_1_1.configure(compound='left')
-        self.Label2_1_1.configure(cursor="fleur")
         self.Label2_1_1.configure(disabledforeground="#a3a3a3")
         self.Label2_1_1.configure(foreground="#000000")
         self.Label2_1_1.configure(highlightbackground="#d9d9d9")
@@ -236,28 +302,30 @@ class GUI:
         self.style.map('TRadiobutton', background=
         [('selected', _bgcolor), ('active', _ana2color)])
         self.POSITION = ttk.Radiobutton(self.top)
-        self.POSITION.place(relx=0.445, rely=0.063, relwidth=0.12, relheight=0.0
-                            , height=31)
-        self.POSITION.configure(variable=self.Position)
+        self.POSITION.place(relx=0.441, rely=0.074, relwidth=0.064, relheight=0.0
+                            , height=23)
+        self.POSITION.configure(variable=self.mode)
         self.POSITION.configure(text='''Position''')
         self.POSITION.configure(compound='left')
 
         self.VELOCITY = ttk.Radiobutton(self.top)
-        self.VELOCITY.place(relx=0.63, rely=0.063, relwidth=0.12, relheight=0.0
-                            , height=31)
-        self.VELOCITY.configure(variable=self.Velocity)
+        self.VELOCITY.place(relx=0.441, rely=0.098, relwidth=0.064, relheight=0.0
+                            , height=23)
+        self.VELOCITY.configure(variable=self.mode)
+        self.VELOCITY.configure(value='2')
         self.VELOCITY.configure(text='''Velocity''')
         self.VELOCITY.configure(compound='left')
 
         self.TORQUE = ttk.Radiobutton(self.top)
-        self.TORQUE.place(relx=0.799, rely=0.063, relwidth=0.12, relheight=0.0
-                          , height=31)
-        self.TORQUE.configure(variable=self.Torque)
-        self.TORQUE.configure(text='''TORQUE''')
+        self.TORQUE.place(relx=0.441, rely=0.123, relwidth=0.064, relheight=0.0
+                          , height=23)
+        self.TORQUE.configure(variable=self.mode)
+        self.TORQUE.configure(value='3')
+        self.TORQUE.configure(text='''Torque''')
         self.TORQUE.configure(compound='left')
 
         self.Label1_1 = tk.Label(self.top)
-        self.Label1_1.place(relx=0.445, rely=0.0, height=31, width=225)
+        self.Label1_1.place(relx=0.507, rely=0.0, height=53, width=394)
         self.Label1_1.configure(activebackground="#f9f9f9")
         self.Label1_1.configure(activeforeground="black")
         self.Label1_1.configure(background="#3e3e3e")
@@ -269,12 +337,64 @@ class GUI:
         self.Label1_1.configure(highlightcolor="black")
         self.Label1_1.configure(text='''Actuator Internal Control Mode''')
 
+        self.style.map('TCheckbutton', background=
+        [('selected', _bgcolor), ('active', _ana2color)])
+        self.DISABLEVIBRATIONCONTROLLER = ttk.Checkbutton(self.top)
+        self.DISABLEVIBRATIONCONTROLLER.place(relx=0.035, rely=0.502
+                                              , relwidth=0.162, relheight=0.0, height=30)
+        self.DISABLEVIBRATIONCONTROLLER.configure(variable=self.controller)
+        self.DISABLEVIBRATIONCONTROLLER.configure(takefocus="")
+        self.DISABLEVIBRATIONCONTROLLER.configure(text='''Disable Vibration Controller''')
+        self.DISABLEVIBRATIONCONTROLLER.configure(compound='left')
+        self.DISABLEVIBRATIONCONTROLLER.configure(cursor="fleur")
+
+
         #Set callbacks
         self.ESTOP.configure(command=self.set_estop_flag)
         self.RESET.configure(command=self.reset_flag)
         self.SHUTDOWN.configure(command=self.set_shutdown_flag)
         self.CYCLESTART.configure(command=self.set_cyclestart_flag)
         self.FEEDHOLD.configure(command=self.set_feedhold_flag)
+
+        self.POSITION.configure(command=self.position_selected)
+        self.VELOCITY.configure(command=self.velocity_selected)
+        self.TORQUE.configure(command=self.torque_selected)
+
+        self.DISABLEVIBRATIONCONTROLLER.configure(command=self.disable_vibration_controller_flag)
+
+        if UserVariables.motor_method == "position":
+            self.mode.set(1) #set the radio button to the default (in UserVariables) when starting the program
+        elif UserVariables.motor_method == "velocity":
+            self.mode.set(2)
+        elif UserVariables.motor_method == "torque":
+            self.mode.set(3)
+
+    def disable_vibration_controller_flag(self):
+        if self.controller.get() == 0:
+            print("Vibration Controller Enabled.")
+            globals.controller_checkbox_flag = 1 #flag to tell program the checkbox has been adjusted
+            UserVariables.disable_controller = False
+
+        elif self.controller.get() == 1:
+            print("Vibration Controller Disabled.")
+            globals.controller_checkbox_flag = 1
+            UserVariables.disable_controller = True
+
+    def position_selected(self):
+        globals.mode = "position"
+        globals.mode_changed_flag = 1
+        print("position mode")
+
+    def velocity_selected(self):
+        globals.mode = "velocity"
+        globals.mode_changed_flag = 1
+        print("Velocity mode")
+
+    def torque_selected(self):
+        globals.mode = "torque"
+        globals.mode_changed_flag = 1
+        print("Torque mode")
+
 
     def status_display(self,message):
         self.STATUSMESSAGE.configure(text=message)

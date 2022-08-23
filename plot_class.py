@@ -15,7 +15,7 @@ class PlotData(object):
         self.Kp_v = -1
         self.Ki_v = -1
         self.Kd_v = -1
-        self.dpi = 30
+        self.dpi = 300
 
         return None
 

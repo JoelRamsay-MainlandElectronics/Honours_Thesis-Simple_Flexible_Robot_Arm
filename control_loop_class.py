@@ -354,10 +354,10 @@ class control_system(object):
 
         if self.disable_processing_flag == 1:
             joint_torque = self.position_torque
-            print("Controller disabled")
+            #print("Controller disabled")
         else:
             joint_torque = self.position_torque - self.deflection_torque
-            print("Controller enabled")
+            #print("Controller enabled")
 
         # clamp the elbow and  currents to the parameter set above.
         if joint_torque > self.current_limit:
