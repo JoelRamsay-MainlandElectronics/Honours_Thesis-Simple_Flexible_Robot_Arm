@@ -34,6 +34,7 @@ print (sys.version)
 
 
 #========================================
+
 class GUI:
     def __init__(self, top=None):
         '''This class configures and populates the toplevel window.
@@ -51,7 +52,7 @@ class GUI:
         self.style.map('.', background=
         [('selected', _compcolor), ('active', _ana2color)])
 
-        top.geometry("651x480+679+235")
+        top.geometry("651x480+951+234")
         top.minsize(120, 1)
         top.maxsize(1924, 2141)
         top.resizable(1, 1)
@@ -66,12 +67,12 @@ class GUI:
         top.configure(menu=self.menubar)
 
         self.TProgressbar1 = ttk.Progressbar(self.top)
-        self.TProgressbar1.place(relx=0.015, rely=0.667, relwidth=0.306
+        self.TProgressbar1.place(relx=0.015, rely=0.625, relwidth=0.306
                                  , relheight=0.0, height=22)
         self.TProgressbar1.configure(length="199")
 
         self.Label1 = tk.Label(self.top)
-        self.Label1.place(relx=0.031, rely=0.604, height=21, width=174)
+        self.Label1.place(relx=0.031, rely=0.563, height=21, width=174)
         self.Label1.configure(activebackground="#f9f9f9")
         self.Label1.configure(activeforeground="black")
         self.Label1.configure(background="#3e3e3e")
@@ -90,7 +91,6 @@ class GUI:
         self.ESTOP.configure(background="#ff0000")
         self.ESTOP.configure(borderwidth="10")
         self.ESTOP.configure(compound='left')
-        self.ESTOP.configure(cursor="fleur")
         self.ESTOP.configure(disabledforeground="#a3a3a3")
         self.ESTOP.configure(font="-family {Segoe UI} -size 36 -weight bold")
         self.ESTOP.configure(foreground="#ffffff")
@@ -157,6 +157,28 @@ class GUI:
         self.FEEDHOLD.configure(pady="0")
         self.FEEDHOLD.configure(text='''Feed Hold''')
 
+        self.Frame1 = tk.Frame(self.top)
+        self.Frame1.place(relx=0.031, rely=0.396, relheight=0.156
+                          , relwidth=0.301)
+        self.Frame1.configure(relief='raised')
+        self.Frame1.configure(borderwidth="5")
+        self.Frame1.configure(relief="raised")
+        self.Frame1.configure(background="#d9d9d9")
+
+        self.STATUSMESSAGE = tk.Label(self.Frame1)
+        self.STATUSMESSAGE.place(relx=0.051, rely=0.133, height=51, width=174)
+        self.STATUSMESSAGE.configure(activebackground="#f9f9f9")
+        self.STATUSMESSAGE.configure(activeforeground="black")
+        self.STATUSMESSAGE.configure(anchor='nw')
+        self.STATUSMESSAGE.configure(background="#000000")
+        self.STATUSMESSAGE.configure(compound='left')
+        self.STATUSMESSAGE.configure(disabledforeground="#a3a3a3")
+        self.STATUSMESSAGE.configure(font="-family {Segoe UI} -size 12 -weight bold")
+        self.STATUSMESSAGE.configure(foreground="#00ff00")
+        self.STATUSMESSAGE.configure(highlightbackground="#d9d9d9")
+        self.STATUSMESSAGE.configure(highlightcolor="black")
+        self.STATUSMESSAGE.configure(justify='left')
+        self.STATUSMESSAGE.configure(text='''''')
 
         #Set callbacks
         self.ESTOP.configure(command=self.set_estop_flag)
@@ -165,18 +187,28 @@ class GUI:
         self.CYCLESTART.configure(command=self.set_cyclestart_flag)
         self.FEEDHOLD.configure(command=self.set_feedhold_flag)
 
+    def status_display(self,message):
+        self.STATUSMESSAGE.configure(text=message)
+
     def set_estop_flag(self):
         print("estop")
         globals.estop_flag = 1 #sets the estop flag to 1, so the program turns off the motors and waits until reset and cycle start.
+        self.STATUSMESSAGE.configure(text='''Emergency Stop!\nWaiting for RESET''')
+        self.STATUSMESSAGE.configure(foreground="#ff0000")
+        #self.("Emergency Stop!\nWaiting for RESET.")
 
     def reset_flag(self):
         print("reset")#sets the estop flag to 1, so the program turns off the motors and waits until reset and cycle start.
         globals.reset_flag = 1
         globals.estop_flag = 0
+        self.STATUSMESSAGE.configure(text='''Ready''')
+        self.STATUSMESSAGE.configure(foreground="#00ff00")
 
     def set_shutdown_flag(self):
         print("shutdown")
         globals.shutdown_flag = 1 #sets the estop flag to 1, so the program turns off the motors and quits.
+        self.STATUSMESSAGE.configure(text='''Shutting Down...''')
+        self.STATUSMESSAGE.configure(foreground="#ff0000")
 
     def set_cyclestart_flag(self):
         print("cyclestart")
@@ -260,6 +292,7 @@ class MainClass(object):
     def run(self):
         print("Running Main...")
         breakloop = False
+        finished_flag = 0
         globals.cycle_start_flag = 0  # reset cycle start flag to avoid unintentional activation.
         while True:
             print("Press CYCLE START to run.")
@@ -268,10 +301,12 @@ class MainClass(object):
                 index = 0
                 self.elbow_motor.enable_motor()#enable the motors
                 self.shoulder_motor.enable_motor()
-                time.sleep(0.1)
+                #time.sleep(0.1)
 
                 while index < self.elbow_trajectory_generator.datapoints:
-
+                    #robot_gui.status_display(message="Running")
+                    robot_gui.STATUSMESSAGE.configure(text='''Running''')
+                    robot_gui.STATUSMESSAGE.configure(foreground="#00ff00")
                     if globals.estop_flag == 1:  #If estop is pressed, break out
                         globals.cycle_start_flag = 0
                         globals.feedhold_flag = 0
@@ -279,20 +314,33 @@ class MainClass(object):
                         self.elbow_motor.disable_motor()  # disable the motors
                         self.shoulder_motor.disable_motor()
                         robot_gui.TProgressbar1.configure(value=0)  # update the progress bar on the gui
-                        #breakloop = True
+                        robot_gui.STATUSMESSAGE.configure(text='''Emergency Stop!\nWaiting for RESET''')
+                        robot_gui.STATUSMESSAGE.configure(foreground="#ff0000")
+                        finished_flag = 1
+                        #time.sleep(0.1)
+                        #breakloop = True#Causes program to crash
                         break
 
                     elif globals.reset_flag == 1: #If reset is pressed, break out but keep motors active
                         globals.cycle_start_flag = 0
                         globals.feedhold_flag = 0
                         robot_gui.TProgressbar1.configure(value=0)  # update the progress bar on the gui
+                        # robot_gui.STATUSMESSAGE.configure(text='''Ready''')
+                        # robot_gui.STATUSMESSAGE.configure(foreground="#00ff00")
+                        #time.sleep(0.1)
                         #globals.reset_flag = 0
                         #breakloop = True
+                        finished_flag = 1
                         break
 
                     elif globals.feedhold_flag == 1: #If feedhold is pressed, stop the motion until cycle start is pressed
                         globals.cycle_start_flag = 0
+                        robot_gui.STATUSMESSAGE.configure(text='''Feed Hold''')
+                        robot_gui.STATUSMESSAGE.configure(foreground="#ff8040")
                         while globals.feedhold_flag == 1:
+                            if globals.estop_flag == 1 or globals.reset_flag == 1:
+                                break
+
                             if globals.cycle_start_flag == 1:
                                 globals.feedhold_flag = 0 #reset the feedhold flag
                                 break
@@ -301,35 +349,6 @@ class MainClass(object):
                     # Quick shutdown without waiting for motion to finish
                     if globals.shutdown_flag == 1:
                         break
-
-                    # while globals.feedhold_flag == 1:
-                    #     #return_reset = self.check_changes()  # Check variables for changes from gui
-                    #
-                    #
-                    #
-                    #
-                    #
-                    #     if (globals.estop_flag == 1) and (globals.reset_flag):
-                    #         robot_gui.TProgressbar1.configure(value=0)  # update the progress bar on the gui
-                    #
-                    #
-                    #     if return_reset == 1:  # if the estop and the reset has been pressed, stop execution and wait for go signal.
-                    #         robot_gui.TProgressbar1.configure(value=0)  # update the progress bar on the gui
-                    #         break
-                    #
-                    #     # Quick shutdown without waiting for motion to finish
-                    #     if globals.shutdown_flag == 1:
-                    #         break
-                    #     time.sleep(0)
-
-
-                    # return_reset = self.check_changes()# Check variables for changes from gui
-                    # if return_reset == 1: #if the estop and the reset has been pressed, stop execution and wait for go signal.
-                    #     robot_gui.TProgressbar1.configure(value=0)  # update the progress bar on the gui
-                    #     break
-
-
-
 
                     SendRecieveBulk(self.groupread_num, self.groupwrite_num).transmit_read()  # Request for new data
 
@@ -395,17 +414,42 @@ class MainClass(object):
             self.shoulder_motor.disable_motor()
             globals.cycle_start_flag = 0  # reset cycle start flag.
 
+
+
+
             while True:
+                if finished_flag == 0 and globals.estop_flag == 0: #if the motion finished and etop is off
+                    robot_gui.STATUSMESSAGE.configure(text='''Ready''')
+                    robot_gui.STATUSMESSAGE.configure(foreground="#00ff00")
+
                 #cycle start button monitoring
                 if globals.cycle_start_flag == 1:
                     globals.reset_flag = 0
                     time.sleep(0.1)
                     break
 
+                # if globals.reset_flag == 1:
+                #     robot_gui.STATUSMESSAGE.configure(text='''Ready''')
+                #     robot_gui.STATUSMESSAGE.configure(foreground="#00ff00")
+
                 #Shutdown flag monitoring
                 if globals.shutdown_flag == 1:
                     breakloop = True
                     break
+
+                if globals.estop_flag == 1:  # If estop or reset is pressed, set the progress bar to zero. This loop is engaged when the motion is completed.
+                    robot_gui.STATUSMESSAGE.configure(text='''Emergency Stop!\nWaiting for RESET''')
+                    robot_gui.STATUSMESSAGE.configure(foreground="#ff0000")
+                    robot_gui.TProgressbar1.configure(value=0)  # update the progress bar on the gui
+                    globals.reset_flag = 0
+
+                if globals.reset_flag == 1:
+                    robot_gui.TProgressbar1.configure(value=0)  # update the progress bar on the gui
+                    globals.estop_flag = 0
+                    finished_flag = 0
+
+                    #time.sleep(0.1)
+
 
             if breakloop == True:
                 print("Quitting!")
