@@ -47,13 +47,33 @@ class control_system(object):
             self.velocity_limit = UserVariables.elbow_velocity_lim
 
         elif self.identity == "Shoulder":
-            self.Kp_j = UserVariables.Kp_j_shoulder
-            self.Ki_j = UserVariables.Ki_j_shoulder
-            self.Kd_j = UserVariables.Kd_j_shoulder
+            if UserVariables.motor_method == "torque":
+                self.Kp_j = UserVariables.Kp_j_shoulder
+                self.Ki_j = UserVariables.Ki_j_shoulder
+                self.Kd_j = UserVariables.Kd_j_shoulder
 
-            self.Kp_v = UserVariables.Kp_v_upper_arm
-            self.Ki_v = UserVariables.Ki_v_upper_arm
-            self.Kd_v = UserVariables.Kd_v_upper_arm
+                self.Kp_v = UserVariables.Kp_v_upper_arm
+                self.Ki_v = UserVariables.Ki_v_upper_arm
+                self.Kd_v = UserVariables.Kd_v_upper_arm
+
+            elif UserVariables.motor_method == "position":
+                self.Kp_j = UserVariables.Kp_j_shoulder_position
+                self.Ki_j = UserVariables.Ki_j_shoulder_position
+                self.Kd_j = UserVariables.Kd_j_shoulder_position
+
+                self.Kp_v = UserVariables.Kp_v_upper_arm_position
+                self.Ki_v = UserVariables.Ki_v_upper_arm_position
+                self.Kd_v = UserVariables.Kd_v_upper_arm_position
+
+            elif UserVariables.motor_method == "velocity":
+                self.Kp_j = UserVariables.Kp_j_shoulder_velocity
+                self.Ki_j = UserVariables.Ki_j_shoulder_velocity
+                self.Kd_j = UserVariables.Kd_j_shoulder_velocity
+
+                self.Kp_v = UserVariables.Kp_v_upper_arm_velocity
+                self.Ki_v = UserVariables.Ki_v_upper_arm_velocity
+                self.Kd_v = UserVariables.Kd_v_upper_arm_velocity
+
             self.current_limit = UserVariables.shoulder_current_lim
             self.position_min = UserVariables.shoulder_position_min
             self.position_max = UserVariables.shoulder_position_max

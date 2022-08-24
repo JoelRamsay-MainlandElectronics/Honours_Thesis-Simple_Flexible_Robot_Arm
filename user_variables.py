@@ -2,7 +2,7 @@ class UserVariables(object):
     disable_controller = False #By default, have the vibration controller on.
     use_game_controller = True
     motor_methods = ["position", "velocity", "torque"]
-    motor_method = motor_methods[0] #by default, select position control mode.
+    motor_method = motor_methods[1] #by default, select position control mode.
     point_to_point = True
 
 
@@ -50,20 +50,20 @@ class UserVariables(object):
 
     # PID Controller gains for VELOCITY CONTROL MODE################################################################
     # Joint control
-    Kp_j_elbow_velocity = 2  # 20 #2
+    Kp_j_elbow_velocity = 80  # 20 #2
     Kd_j_elbow_velocity = 0  # 10 #0.25
-    Ki_j_elbow_velocity = 0.0001  # 0.00001 #0.15
+    Ki_j_elbow_velocity = 0.00001  # 0.00001 #0.15
 
-    Kp_j_shoulder_velocity = 10  # 0 #10
-    Kd_j_shoulder_velocity = 0  # 0.000001 #4
+    Kp_j_shoulder_velocity = 100  # 0 #10
+    Kd_j_shoulder_velocity = 10  # 0.000001 #4
     Ki_j_shoulder_velocity = 0.0001  # 0.000001 #0.15
 
     # Vibration Control
-    Kp_v_lower_arm_velocity = 0  # 0.2#50 #0.2
+    Kp_v_lower_arm_velocity = 10 #10  # 0.2#50 #0.2
     Kd_v_lower_arm_velocity = 0  # 0.01#50 #0.01
     Ki_v_lower_arm_velocity = 0
 
-    Kp_v_upper_arm_velocity = 0  # 0.05#0.0 #0.05 #increasing this makes the robot more compliant
+    Kp_v_upper_arm_velocity = 5  # 0.05#0.0 #0.05 #increasing this makes the robot more compliant
     Kd_v_upper_arm_velocity = 0  # 0.01#0.0 #0.01
     Ki_v_upper_arm_velocity = 0
 
@@ -106,14 +106,14 @@ class UserVariables(object):
     #Motion related variables
     elbow_start = 155
     elbow_end = 155
-    shoulder_start = 180
-    shoulder_end = 180
-    timespan = 2 #time to move through motion
+    shoulder_start = 155
+    shoulder_end = 155
+    timespan = 3 #time to move through motion
 
     #Home position
     elbow_home = 180
     shoulder_home = 180
-    timespan_home = 2 #time to return home
+    timespan_home = 3 #time to return home
 
     #pixels to degrees scaling factor
     deflection_scaling = 0.17
