@@ -104,16 +104,16 @@ class UserVariables(object):
 
 
     #Motion related variables
-    elbow_start = 155
-    elbow_end = 155
-    shoulder_start = 155
-    shoulder_end = 155
-    timespan = 3 #time to move through motion
+    elbow_start = 90
+    elbow_end = 90
+    shoulder_start = 180
+    shoulder_end = 180
+    timespan = 30 #time to move through motion
 
     #Home position
     elbow_home = 180
     shoulder_home = 180
-    timespan_home = 3 #time to return home
+    timespan_home = 1.5 #time to return home
 
     #pixels to degrees scaling factor
     deflection_scaling = 0.17
@@ -141,3 +141,11 @@ class UserVariables(object):
     Ki_position_shoulder = 0
     Kd_position_shoulder = 0
     ########################################################################################
+
+    number_random_motions = 10 #The number of motions in the movement sequence
+    feedrate = 5000
+    # trajectory related variables
+    x_min = 150
+    x_max = 750
+    y_min = 150
+    y_max = 750

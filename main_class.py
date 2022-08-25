@@ -1,6 +1,7 @@
 #Import Classes========================
 import os
 
+import end_effector_trajectory_class
 from camera_class import *
 from image_processing_class import *
 from servo_motor_class import *
@@ -21,6 +22,8 @@ import tkinter as tk
 import tkinter.ttk as ttk
 import threading
 import sys
+
+from imports_file import *
 
 
 
@@ -74,11 +77,14 @@ class MainClass(object):
                                                                                               UserVariables.timespan_home,
                                                                                               UserVariables.update_frequency)
         elif UserVariables.point_to_point == False:
-            self.elbow_trajectory_generator = MotionTraj()
-            self.shoulder_trajectory_generator = MotionTraj()
-            self.elbow_traj = self.elbow_trajectory_generator.elbow()
-            self.shoulder_traj = self.shoulder_trajectory_generator.shoulder()
-            print(self.elbow_traj)
+            # self.elbow_trajectory_generator = MotionTraj()
+            # self.shoulder_trajectory_generator = MotionTraj()
+            # self.elbow_traj = self.elbow_trajectory_generator.elbow()
+            # self.shoulder_traj = self.shoulder_trajectory_generator.shoulder()
+            # print(self.elbow_traj)
+
+            self.elbow_traj = inv_kinematics().calculate_joint_trajectory()
+
         else:
             quit("User Variable Error. Check if Point to Point TRUE/FALSE is defined correctly in user variables class.")
 

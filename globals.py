@@ -18,3 +18,6 @@ class globals(object):
     mode = UserVariables.motor_method
     mode_changed_flag = 0
     controller_checkbox_flag = 0
+
+
+

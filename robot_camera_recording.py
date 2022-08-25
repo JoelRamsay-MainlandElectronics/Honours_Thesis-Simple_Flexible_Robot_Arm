@@ -9,7 +9,7 @@ frame_rate = 50
 seconds = 0
 minutes = 0
 frame_number = int(frame_rate*(minutes*60 + seconds))
-time_increment = 0.1 #seconds. How many seconds to sample the video.
+time_increment = 1 #seconds. How many seconds to sample the video.
 weighted_frame = video.set(cv2.CAP_PROP_POS_MSEC, 0) #get the initial frame
 frames_array = []
 while True:
@@ -20,18 +20,20 @@ while True:
         break
     video.set(cv2.CAP_PROP_POS_FRAMES, frame_number)
     ret, frame = video.read()
+    image = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+    cv2.imwrite("/images/controller_disabled/image"+str(frame_number)+".jpg",image)
     minutes = 0
     seconds = seconds + time_increment
     frames_array.append(frame)
 
     #weighted_frame = cv2.addWeighted(frame,0.7,weighted_frame,0.5,0)
-    output = frames_array[0]
-weighted_frame = 0
-print("len",len(frames_array))
-for i in range(len(frames_array)):
-    alpha = 1.0 / (i+0.001)
-    beta = 1.0 - alpha
-    weighted_frame = cv2.addWeighted(weighted_frame,1,frames_array[i],1/64,0)
+    # output = frames_array[0]
+# weighted_frame = 0
+# print("len",len(frames_array))
+# for i in range(len(frames_array)):
+#     alpha = 1.0 / (i+0.001)
+#     beta = 1.0 - alpha
+#     weighted_frame = cv2.addWeighted(weighted_frame,1,frames_array[i],1/64,0)
 # weighted_frame = 0
 # for i in range(len(frames_array)):
 #     #alpha = 1/(len(frames_array))
@@ -43,5 +45,5 @@ for i in range(len(frames_array)):
 #weighted_frame = weighted_frame / 100
 
 #weighted_frame.astype(np.uint8)
-cv2.imshow("image", weighted_frame)
-cv2.waitKey(0)
+# cv2.imshow("image", weighted_frame)
+# cv2.waitKey(0)

@@ -29,9 +29,9 @@ x_min = 150#300#0 #Start X position
 y_max = 700#801#850
 y_min = 150#849#800
 
-num_samples = 100 #number of robots
+num_samples = 10 #number of robots
 precision = 0.04 #used to control how precise the motion datapoints are, and how many are in the vectors. Gives 250 datapoints at 0.004 seconds/sample.
-minimum_amount = 250 #minimum distance of movement.
+minimum_amount = 0 #minimum distance of movement.
 
 time_upper_limit = 2 #number of seconds for motion to run
 settling_time = 2  #number of seconds for the motion to settle after movement
